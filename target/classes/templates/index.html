@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>QuickHomeFix</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> 
+
+
+    <!-- Icon Font Stylesheet -->
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css}" rel="stylesheet">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css}" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-3 px-lg-5">
+        <a href="/home" class="navbar-brand d-flex align-items-center">
+            <h1 class="m-0"><img class="img-fluid me-3" src="img/icon/drop logo.png" alt="" >QuickHomeFix</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+            <div class="navbar-nav mr-auto pe-4 py-3 py-lg-0">
+                <a href="/home" class="nav-item nav-link">Home</a>
+         		
+                <a href="/register" class="nav-item nav-link">User Registration</a>
+                <a href="/serviceregistration" class="nav-item nav-link">Become a Partner</a>
+                <a href="#" class="nav-item nav-link" onclick="scrollToContact()">Contact Us</a>
+                <a href="/about1" class="nav-item nav-link">About Us</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 mb-5">
+        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" src="img/home2.png" alt="Image" height="650px">
+                    <div class="carousel-caption">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-7 pt-5">
+                                    <h1 class="display-4 text-white mb-4 animated slideInDown">
+                                        From fixing leaks to unlocking dreams, we're the superheroes of home repair!
+                                    </h1>
+                                    <p class="fs-5 text-body mb-4 pb-2 mx-sm-5 animated slideInDown">Home is where the heart is, but sometimes it needs a little fixing. Let Quick Home Fix turn your house into a heaven again, with our expert services and personalized care.</p>
+                                    <a href="" class="btn btn-primary py-3 px-5 animated slideInDown">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="img/home1.png" alt="Image" height="650px">
+                    <div class="carousel-caption">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-7 pt-5">
+                                    <h1 class="display-4 text-white mb-4 animated slideInDown">
+                                        Quick Home Fix: Where your house becomes a heaven again.</h1>
+                                    <p class="fs-5 text-body mb-4 pb-2 mx-sm-5 animated slideInDown">Turning 'Oh no!' into 'Wow!' - one repair at a time.</p>
+                                    <a href="" class="btn btn-primary py-3 px-5 animated slideInDown">Explore More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+
+    <!-- About Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="h-100">
+                    <h1 class="display-6 mb-4">Experience Home Comfort at Your Doorstep with QuickHomeFix</h1>
+                    <p class="mb-4">Our team is dedicated to providing unparalleled service, ensuring your home remains a heaven of comfort and relaxation. From cleaning maintenance to appliance repairs, trust QuickHomeFix for all your home service needs</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6 text-end">
+                        <img class="img-fluid w-75 wow zoomIn" data-wow-delay="0.1s" src="img/serv-2.svg" style="margin-top: 25%;">
+                    </div>
+                    <div class="col-6 text-start">
+                        <img class="img-fluid w-100 wow zoomIn" data-wow-delay="0.3s" src="img/serv-1.svg">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid w-50 wow zoomIn" data-wow-delay="0.5s" src="img/serv-3.svg">
+                    </div>
+                    <div class="col-6 text-start">
+                        <img class="img-fluid w-75 wow zoomIn" data-wow-delay="0.7s" src="img/serv-4.svg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h1 class="display-6 mb-5">Our Service Categories</h1>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item">
+                        <img class="img-fluid" src="img/home_cleaning.png" alt="">
+                        <div class="d-flex align-items-center bg-light">
+                            <div class="service-icon flex-shrink-0 bg-primary">
+                                <img class="img-fluid" src="img/icon/home-icon.svg" alt="">
+                            </div>
+                            <a class="h4 mx-4 mb-0" href="/homeclean">Home Cleaning</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-item">
+                        <img class="img-fluid" src="img/plumbing.png" alt="">
+                        <div class="d-flex align-items-center bg-light">
+                            <div class="service-icon flex-shrink-0 bg-primary">
+                                <img class="img-fluid" src="img/icon/plumber-icon.svg" alt="">
+                            </div>
+                            <a class="h4 mx-4 mb-0" href="/plumb">Plumbing</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-item">
+                        <img class="img-fluid" src="img/electrician.png" alt="">
+                        <div class="d-flex align-items-center bg-light">
+                            <div class="service-icon flex-shrink-0 bg-primary">
+                                <img class="img-fluid" src="img/icon/electrical-work-icon.svg" alt="">
+                            </div>
+                            <a class="h4 mx-4 mb-0" href="electricalwork.html">Electrical work</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item">
+                        <img class="img-fluid" src="img/carpentry.png" alt="">
+                        <div class="d-flex align-items-center bg-light">
+                            <div class="service-icon flex-shrink-0 bg-primary">
+                                <img class="img-fluid" src="img/icon/carpentry.svg" alt="">
+                            </div>
+                            <a class="h4 mx-4 mb-0" href="carpentry.html">Carpentry</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-item">
+                        <img class="img-fluid" src="img/appliance.png" alt="">
+                        <div class="d-flex align-items-center bg-light">
+                            <div class="service-icon flex-shrink-0 bg-primary">
+                                <img class="img-fluid" src="img/icon/appliance-repair-icon.svg" alt="">
+                            </div>
+                            <a class="h4 mx-4 mb-0" href="appliancerepair.html">Appliance repair</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-item">
+                        <img class="img-fluid" src="img/renovation.png" alt="">
+                        <div class="d-flex align-items-center bg-light">
+                            <div class="service-icon flex-shrink-0 bg-primary">
+                                <img class="img-fluid" src="img/icon/home-reno-icon.svg" alt="">
+                            </div>
+                            <a class="h4 mx-4 mb-0" href="homerenovation.html">Home renovation</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+     <!-- Contact Start -->
+<div id="contact" class="container-xxl py-5">
+    <div class="container text-center"> <!-- Center alignment -->
+        <div class="row g-5 justify-content-center"> <!-- Center align the row -->
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s"> <!-- Half width for center alignment -->
+                <h1 class="display-6 mb-5">If You Have Any Query, Please Contact Us</h1>
+                <p class="mb-4">Connect with us today for any questions or concerns you may have. Our team is here to assist you every step of the way. <a href="/index.html">Home</a>.</p>
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="name" placeholder="Your Name">
+                                <label for="name">Your Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" placeholder="Your Email">
+                                <label for="email">Your Email</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                <label for="subject">Subject</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
+                                <label for="message">Message</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary py-3 px-5" type="submit">Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+
+
+
+    <!-- Testimonial Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h1 class="display-6 mb-5">What They Say About Our Services</h1>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-3 d-none d-lg-block">
+                    <div class="testimonial-left h-100">
+                        <img class="img-fluid animated pulse infinite" src="img/Testi-3.png" alt="">
+                        <img class="img-fluid animated pulse infinite" src="img/Testi-2.png" alt="">
+                        <img class="img-fluid animated pulse infinite" src="img/Testi-1.png" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <div class="owl-carousel testimonial-carousel">
+                        <div class="testimonial-item text-center">
+                            <img class="img-fluid mx-auto mb-4" src="img/Testi-1.png" alt="">
+                            <p class="fs-5">I was amazed by the quick response and quality service provided by QuickHome Fix. They truly live up to their name!</p>
+                            <h5>Prerana</h5>
+                            <span>VijayNagar, Bengaluru</span>
+                        </div>
+                        <div class="testimonial-item text-center">
+                            <img class="img-fluid mx-auto mb-4" src="img/Testi-2.png" alt="">
+                            <p class="fs-5">QuickHome Fix saved the day with their prompt and reliable service. I highly recommend them for all your home repair needs.</p>
+                            <h5>Shravan</h5>
+                            <span>JayNagar, Bengaluru</span>
+                        </div>
+                        <div class="testimonial-item text-center">
+                            <img class="img-fluid mx-auto mb-4" src="img/Testi-3.png" alt="">
+                            <p class="fs-5">QuickHome Fix transformed my house into a cozy sanctuary! Their team was professional, efficient, and exceeded my expectations.</p>
+                            <h5>Ajay</h5>
+                            <span>RR-Nagar, Bengaluru</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 d-none d-lg-block">
+                    <div class="testimonial-right h-100">
+                        <img class="img-fluid animated pulse infinite" src="img/Testi-3.png" alt="">
+                        <img class="img-fluid animated pulse infinite" src="img/Testi-1.png" alt="">
+                        <img class="img-fluid animated pulse infinite" src="img/Testi-2.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid custom-bg-color footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Get In Touch</h5>
+                    <p><i class="fa fa-map-marker-alt me-3"></i>Tower-T Global-Tech-Park Bengaluru</p>
+                    <p><i class="fa fa-phone-alt me-3"></i>+91 8080808080</p>
+                    <p><i class="fa fa-envelope me-3"></i>quickhomefixinfo@gmail.com</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Our Services</h5>
+                    <a class="btn btn-link" href="">Home Cleaning</a>
+                    <a class="btn btn-link" href="">Plumbing</a>
+                    <a class="btn btn-link" href="">Electrical Work</a>
+                    <a class="btn btn-link" href="">Carpentry</a>
+                    <a class="btn btn-link" href="">Appliance Repair</a>
+                    <a class="btn btn-link" href="">Home Renovation</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Quick Links</h5>
+                    <a class="btn btn-link" href="/about1">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-light mb-4">Follow Us</h5>
+                    <div class="d-flex">
+                        <a class="btn btn-square rounded-circle me-1" href="https://facebook.com"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square rounded-circle me-1" href="https://youtube.com"><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square rounded-circle me-1" href="https://linkedin.com"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+
+
+    <!-- JavaScript Libraries -->
+    <script th:src="@{https://code.jquery.com/jquery-3.4.1.min.js}"></script>
+    <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/lib/wow/wow.min.js}"></script>
+    <script th:src="@{/lib/easing/easing.min.js}"></script>
+    <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/lib/counterup/counterup.min.js}"></script>
+    <script th:src="@{/lib/parallax/parallax.min.js}"></script>
+     <!-- Template Javascript -->
+    <script th:src="@{/js/main.js}"></script>
+
+    <script>
+        function scrollToContact() {
+            // Get the position of the contact section
+            const contactSection = document.getElementById('contact');
+            const contactSectionPosition = contactSection.offsetTop;
+    
+            // Smooth scroll to the contact section
+            window.scrollTo({
+                top: contactSectionPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const ourServicesDropdown = document.getElementById('ourServicesDropdown');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+    
+            ourServicesDropdown.addEventListener('click', function(event) {
+                event.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+    
+            // Close the dropdown menu when clicking outside of it
+            window.addEventListener('click', function(event) {
+                if (!dropdownMenu.contains(event.target) && !ourServicesDropdown.contains(event.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        });
+    </script>
+    
+
+</body>
+
+</html>

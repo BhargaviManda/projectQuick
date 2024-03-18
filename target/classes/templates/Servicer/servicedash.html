@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Custom styles */
+      /* Custom styles */
+      body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            height: 100%;
+            width: 250px;
+            background: #007bff; /* Blue color */
+            color: #fff;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #4e555b;
+        }
+        .sidebar-header h3 {
+            margin-bottom: 0;
+        }
+        .list-unstyled {
+            padding-left: 20px;
+        }
+        .list-unstyled li {
+            margin-bottom: 10px;
+        }
+        .list-unstyled li a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .list-unstyled li a:hover {
+            color: #f8f9fa;
+        }
+        .navbar {
+            background: #28a745; /* Green color */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 24px; /* Increase navbar icon size */
+        }
+        .navbar-nav .nav-link {
+            color: #fff;
+        }
+        .profile-picture {
+            width: 40px; /* Adjust profile picture size */
+            height: 40px; /* Adjust profile picture size */
+            border-radius: 50%;
+        }
+        .modal-dialog.modal-dialog-right {
+            right: 0;
+            margin-right: 20px;
+            margin-top: 20px;
+            width: 400px; /* Adjust the width of the modal as needed */
+        }
+        @media (max-width: 768px) {
+            .modal-dialog.modal-dialog-right {
+                margin-right: 0;
+                margin-top: 0;
+            }
+        }
+        .modal-content {
+            border-radius: 10px;
+            animation: fadeIn 0.5s;
+            background-color: #fff; /* White background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .modal-header {
+            background-color: #343a40;
+            color: #fff;
+            border-radius: 10px 10px 0 0; /* Round corners */
+        }
+        .modal-footer {
+            justify-content: center;
+            border-top: none; /* Remove border */
+            border-radius: 0 0 10px 10px; /* Round corners */
+        }
+        .close {
+            color: #fff;
+            font-size: 20px; /* Increase close button size */
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .sidebar .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 15px 30px; /* Adjust button size */
+            font-size: 20px; /* Adjust button font size */
+            border-radius: 20px; /* Rounded corners */
+            margin-bottom: 20px; /* Add space between buttons */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        /* Hamburger button styles */
+        #sidebarCollapse {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000; /* Ensure the hamburger button stays behind the sidebar */
+            font-size: 24px; /* Increase hamburger button size */
+            transition: transform 0.3s;
+            color: #000; /* Black color */
+            background-color: transparent; /* Transparent background */
+            border: none; /* No border */
+            cursor: pointer;
+            z-index: 1000;
+        }
+        #sidebarCollapse:hover {
+            transform: scale(1.1); /* Scale effect on hover */
+        }
+        #sidebarCollapse.active {
+            transform: rotate(180deg); /* Rotate 180 degrees when active */
+            z-index: 999; /* Lower z-index to hide behind the sidebar */
+        }
+        /* Sidebar button styles */
+        .sidebar-button {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            text-decoration: none;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+            border-radius: 20px; /* Rounded corners */
+        }
+        .sidebar-button:hover {
+            background-color: #0056b3;
+        }
+        .sidebar-icon {
+            margin-right: 10px;
+        }
+        /* Animation for sidebar */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        /* Styling for dashboard buttons */
+        .dashboard-btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .dashboard-btn {
+            flex: 0 0 calc(50% - 10px);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+            height: 100px; /* Increased button height */
+        }
+        .dashboard-btn i {
+            margin-right: 10px;
+        }
+        .dashboard-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Service Provider Dashboard</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li >
+                <a href="#manage-bookings" class="sidebar-button">
+                    <i class="fas fa-tasks sidebar-icon"></i>Manage Bookings <i class="fas fa-caret-down"></i>
+                </a>
+                <ul class="list-unstyled sub-menu" >
+                    <li data-bs-toggle="modal" data-bs-target="#scheduledServicesModal">
+                        <a href="#scheduled">
+                            <i class="far fa-clock sidebar-icon"></i>Scheduled
+                        </a>
+                    </li>
+                    <li  data-bs-toggle="modal" data-bs-target="#completedServicesModal">
+                        <a href="#completed">
+                            <i class="fas fa-check-circle sidebar-icon"></i>Completed
+                        </a>
+                    </li>
+                    <li  data-bs-toggle="modal" data-bs-target="#canceledServicesModal">
+                        <a href="#canceled">
+                            <i class="fas fa-times-circle sidebar-icon"></i>Canceled
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li data-bs-toggle="modal" data-bs-target="#viewCustomerDetailsModal">
+                <a href="#view-customer-details" class="sidebar-button">
+                    <i class="fas fa-user-friends sidebar-icon"></i>View Customer Details
+                </a>
+            </li>
+            <li data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                <a href="#update-profile" class="sidebar-button">
+                    <i class="fas fa-user-edit sidebar-icon"></i>Update Profile
+                </a>
+            </li>
+            <li data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                <a href="#change-password" class="sidebar-button">
+                    <i class="fas fa-key sidebar-icon"></i>Change Password
+                </a>
+            </li>
+            <li data-bs-toggle="modal" data-bs-target="#contactSupportModal">
+                <a href="#contact-support" class="sidebar-button">
+                    <i class="fas fa-headset sidebar-icon"></i>Contact Support
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Page Content -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <!-- Hamburger Menu Button -->
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <!-- Right Side Items -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#" style="font-size: 18px; padding-top: 12px;">Home</a> <!-- Adjust button font size and vertical alignment -->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#profile" data-toggle="modal" data-target="#profileModal">
+                                <i class="fas fa-user-circle profile-icon" style="color: #007bff; font-size: 32px;"></i> <!-- Adjust icon size -->
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#logout" onclick="confirmLogout()" >
+                                <i class="fas fa-sign-out-alt" style="color: #28a745; font-size: 32px;"></i> <!-- Adjust icon size -->
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Main Content Goes Here -->
+
+            <!-- Main Content -->
+<div class="container">
+    <!-- Main Content Buttons -->
+    <div class="dashboard-btn-container">
+        <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#scheduledServicesModal">
+            <i class="fas fa-clock"></i> Scheduled
+        </button>
+        <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#completedServicesModal">
+            <i class="fas fa-check-circle"></i> Completed
+        </button>
+        <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#canceledServicesModal">
+            <i class="fas fa-times-circle"></i> Canceled
+        </button>
+        <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#viewCustomerDetailsModal">
+            <i class="fas fa-user"></i> View Customer Details
+        </button>
+        <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+            <i class="fas fa-user-edit"></i> Update Profile
+        </button>
+        <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+            <i class="fas fa-key"></i> Change Password
+        </button>  <button type="button" class="dashboard-btn dropdown-toggle" data-bs-toggle="modal" data-bs-target="#acceptRejectServiceModal" >
+            <i class="fas fa-thumbs-up"></i><i class="fas fa-thumbs-down"></i> Accept/Reject Service
+        </button>
+        <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#contactSupportModal">
+            <i class="fas fa-headset"></i> Contact Support
+        </button>
+    </div>
+</div>
+
+        </div>
+    </div>
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-right" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: #000;">Name: John Doe</p> <!-- Adjust profile text color -->
+                    <p style="color: #000;">Email: example@gmail.com</p> <!-- Adjust profile text color -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Change Password</button>
+                    <button type="button" class="btn btn-danger">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Scheduled Services Modal -->
+<div class="modal fade" id="scheduledServicesModal" tabindex="-1" aria-labelledby="scheduledServicesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl"> <!-- Adjusted modal size class -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scheduledServicesModalLabel">Scheduled Services</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive table-responsive-xl"> <!-- Added table-responsive-xl class -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Service ID</th>
+                                <th>Service Type</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Customer Name</th>
+                                <th>Customer Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Replace this with dynamically generated content -->
+                            <tr>
+                                <td>1</td>
+                                <td>101</td>
+                                <td>Home Cleaning</td>
+                                <td>2024-03-25</td>
+                                <td>10:00 AM</td>
+                                <td>John Doe</td>
+                                <td>johndoe@example.com</td>
+                                <td>
+                                    <!-- Add action buttons here -->
+                                    <button class="btn btn-success btn-sm">Start Service</button> <!-- Reduced button size -->
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Completed Services Modal -->
+<div class="modal fade" id="completedServicesModal" tabindex="-1" aria-labelledby="completedServicesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="completedServicesModalLabel">Completed Services</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive table-responsive-xl">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Service ID</th>
+                                <th>Service Type</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Customer Name</th>
+                                <th>Customer Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Replace this with dynamically generated content -->
+                            <tr>
+                                <td>1</td>
+                                <td>102</td>
+                                <td>Car Wash</td>
+                                <td>2024-03-20</td>
+                                <td>2:00 PM</td>
+                                <td>Jane Smith</td>
+                                <td>janesmith@example.com</td>
+                                <td>
+                                    <!-- Add action buttons here -->
+                                    <button class="btn btn-primary btn-sm">View Details</button>
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Canceled Services Modal -->
+<div class="modal fade" id="canceledServicesModal" tabindex="-1" aria-labelledby="canceledServicesModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="canceledServicesModalLabel">Canceled Services</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Service ID</th>
+                                <th>Service Type</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Customer Name</th>
+                                <th>Customer Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Replace this with dynamically generated content -->
+                            <tr>
+                                <td>1</td>
+                                <td>102</td>
+                                <td>Plumbing</td>
+                                <td>2024-03-20</td>
+                                <td>9:00 AM</td>
+                                <td>Jane Smith</td>
+                                <td>janesmith@example.com</td>
+                                <td class="d-flex justify-content-around">
+                                    <!-- Add action buttons here -->
+                                    <button class="btn btn-outline-primary btn-sm">Reschedule</button>
+                                    <button class="btn btn-outline-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- View Customer Details Modal -->
+<div class="modal fade" id="viewCustomerDetailsModal" tabindex="-1" aria-labelledby="viewCustomerDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewCustomerDetailsModalLabel">Customer Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Service ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Address</th>
+                                <!-- Add more fields as needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>123456</td>
+                                <td>John Doe</td>
+                                <td>johndoe@example.com</td>
+                                <td>+1234567890</td>
+                                <td>123 Main Street, City, Country</td>
+                                <!-- Add more rows for other customers -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Update Profile Modal -->
+<div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProfileModalLabel">Update Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Profile Update Form -->
+                <form>
+                    <div class="mb-3">
+                        <label for="inputName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPhone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="inputPhone" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputAddress" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="Enter your address" required>
+                    </div>
+                    <!-- Additional Services -->
+                    <div class="mb-3">
+                        <label for="additionalServices" class="form-label">Additional Services</label>
+                        <textarea class="form-control" id="additionalServices" rows="3" placeholder="Enter additional services you provide"></textarea>
+                    </div>
+                    <!-- Add more fields as needed -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-top">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPassword">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Accept/Reject Service Modal -->
+<div class="modal fade" id="acceptRejectServiceModal" tabindex="-1" aria-labelledby="acceptRejectServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-top modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acceptRejectServiceModalLabel">Accept/Reject Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Service ID</th>
+                                <th>Service Name</th>
+                                <th>Address</th>
+                                <th>Pincode</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Replace this with dynamically generated content -->
+                            <tr>
+                                <td>1</td>
+                                <td>101</td>
+                                <td>Plumbing</td>
+                                <td>123 Main Street</td>
+                                <td>12345</td>
+                                <td>
+                                    <button class="btn btn-success btn-sm">Accept</button>
+                                    <button class="btn btn-danger btn-sm">Reject</button>
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Contact Support Modal -->
+<div class="modal fade" id="contactSupportModal" tabindex="-1" aria-labelledby="contactSupportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactSupportModalLabel">Contact Support</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" placeholder="Enter the subject" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Enter your message" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+ 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <script>
+        function confirmLogout() {
+            // Display confirmation dialog
+            if (confirm("Are you sure you want to sign out?")) {
+                // Redirect to logout page or perform logout action
+                window.location.href = "logout.php"; // Change this to your logout URL
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $(this).toggleClass('active');
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+            // Toggle sub-menu on sidebar
+            $('.sidebar-button').click(function () {
+                $(this).toggleClass('active');
+                $(this).next('.sub-menu').slideToggle();
+            });
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.sidebar').length && !$(e.target).closest('#sidebarCollapse').length && $('#sidebar').hasClass('active')) {
+                    $('#sidebar').removeClass('active');
+                    $('#content').removeClass('active');
+                    $('#sidebarCollapse').removeClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

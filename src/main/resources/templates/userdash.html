@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    
+    <style>
+       /* Custom styles */
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            height: 100%;
+            width: 250px;
+            background: #007bff; /* Blue color */
+            color: #fff;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+        #content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #4e555b;
+        }
+        .sidebar-header h3 {
+            margin-bottom: 0;
+        }
+        .list-unstyled {
+            padding-left: 20px;
+        }
+        .list-unstyled li {
+            margin-bottom: 10px;
+        }
+        .list-unstyled li a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .list-unstyled li a:hover {
+            color: #f8f9fa;
+        }
+        .navbar {
+            background: #28a745; /* Green color */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 24px; /* Increase navbar icon size */
+        }
+        .navbar-nav .nav-link {
+            color: #fff;
+        }
+        .profile-picture {
+            width: 40px; /* Adjust profile picture size */
+            height: 40px; /* Adjust profile picture size */
+            border-radius: 50%;
+        }
+        .modal-dialog.modal-dialog-right {
+            right: 0;
+            margin-right: 20px;
+            margin-top: 20px;
+            width: 400px; /* Adjust the width of the modal as needed */
+        }
+        @media (max-width: 768px) {
+            .modal-dialog.modal-dialog-right {
+                margin-right: 0;
+                margin-top: 0;
+            }
+        }
+        .modal-content {
+            border-radius: 10px;
+            animation: fadeIn 0.5s;
+            background-color: #fff; /* White background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .modal-header {
+            background-color: #343a40;
+            color: #fff;
+            border-radius: 10px 10px 0 0; /* Round corners */
+        }
+        .modal-footer {
+            justify-content: center;
+            border-top: none; /* Remove border */
+            border-radius: 0 0 10px 10px; /* Round corners */
+        }
+        .close {
+            color: #fff;
+            font-size: 20px; /* Increase close button size */
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .sidebar .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 15px 30px; /* Adjust button size */
+            font-size: 20px; /* Adjust button font size */
+            border-radius: 20px; /* Rounded corners */
+            margin-bottom: 20px; /* Add space between buttons */
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        /* Hamburger button styles */
+        #sidebarCollapse {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000; /* Ensure the hamburger button stays behind the sidebar */
+            font-size: 24px; /* Increase hamburger button size */
+            transition: transform 0.3s;
+            color: #000; /* Black color */
+            background-color: transparent; /* Transparent background */
+            border: none; /* No border */
+            cursor: pointer;
+            z-index: 1000;
+        }
+        #sidebarCollapse:hover {
+            transform: scale(1.1); /* Scale effect on hover */
+        }
+        #sidebarCollapse.active {
+            transform: rotate(180deg); /* Rotate 180 degrees when active */
+            z-index: 999; /* Lower z-index to hide behind the sidebar */
+        }
+        /* Sidebar button styles */
+        .sidebar-button {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            text-decoration: none;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+            border-radius: 20px; /* Rounded corners */
+        }
+        .sidebar-button:hover {
+            background-color: #0056b3;
+        }
+        .sidebar-icon {
+            margin-right: 10px;
+        }
+        /* Animation for sidebar */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        /* Styling for dashboard buttons */
+        .dashboard-btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .dashboard-btn {
+            flex: 0 0 calc(50% - 10px);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+            height: 100px; /* Increased button height */
+        }
+        .dashboard-btn i {
+            margin-right: 10px;
+        }
+        .dashboard-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+        }
+
+        /* modal button  */
+        
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>User Dashboard</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#book-service" class="sidebar-button" data-bs-toggle="modal" data-bs-target="#serviceBookingModal">
+                    <i class="fas fa-book sidebar-icon" ></i>Book Service
+                </a>
+            </li>
+            <li>
+                <a href="#view-bookings" class="sidebar-button" data-bs-toggle="modal" data-bs-target="#viewBookingsModal">
+                    <i class="fas fa-list-alt sidebar-icon"></i>View Bookings
+                </a>
+            </li>
+            <li>
+                <a href="#order-history" class="sidebar-button" data-bs-toggle="modal" data-bs-target="#orderHistoryModal">
+                    <i class="fas fa-history sidebar-icon"></i>Order History
+                </a>
+            </li>
+            <li>
+                <a href="#update-profile" class="sidebar-button" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                    <i class="fas fa-user-edit sidebar-icon"></i>Update Profile
+                </a>
+            </li>
+            <li>
+                <a href="#change-password" class="sidebar-button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    <i class="fas fa-key sidebar-icon"></i>Change Password
+                </a>
+            </li>
+            <li>
+                <a href="#contact-support" class="sidebar-button" data-bs-toggle="modal" data-bs-target="#contactSupportModal">
+                    <i class="fas fa-headset sidebar-icon"></i>Contact Support
+                </a>
+            </li>
+            <!-- Review button added to sidebar -->
+            <li>
+                <a href="#review-service" class="sidebar-button" data-bs-toggle="modal" data-bs-target="#reviewServiceModal">
+                    <i class="fas fa-star sidebar-icon"></i>Review Service
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Page Content -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <!-- Hamberger Menu Button -->
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <!-- Right Side Items -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active" >
+                            <a class="nav-link" href="#" style="font-size: 18px; padding-top: 12px;" >Home</a> <!-- Adjust button font size and vertical alignment -->
+                        </li>     <li class="nav-item active" data-bs-toggle="modal" data-bs-target="#serviceBookingModal">
+                            <a class="nav-link" href="#" style="font-size: 18px; padding-top: 12px;">Book Services</a> <!-- Adjust button font size and vertical alignment -->
+                        </li>    
+                        <li class="nav-item">
+                            <a class="nav-link" href="#profile" data-toggle="modal" data-target="#profileModal">
+                                <i class="fas fa-user-circle profile-icon" style="color: #007bff; font-size: 32px;"></i> <!-- Adjust icon size -->
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#logout" onclick="confirmLogout()">
+                                <i class="fas fa-sign-out-alt" style="color: #28a745; font-size: 32px;"></i> <!-- Adjust icon size -->
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Main Content Buttons -->
+            <div class="dashboard-btn-container">
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#serviceBookingModal">
+                    <i class="fas fa-book data-bs-toggle="modal" data-bs-target="#serviceBookingModal""></i> Book Service
+                </button>
+                
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#viewBookingsModal">
+                    <i class="fas fa-list-alt"></i> View Bookings
+                </button>
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#orderHistoryModal">
+                    <i class="fas fa-history" ></i> Order History
+                </button>
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                    <i class="fas fa-user-edit"></i> Update Profile
+                </button>
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#contactSupportModal">
+                    <i class="fas fa-headset"></i> Contact Support
+                </button>
+                <!-- Review Button -->
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#reviewServiceModal">
+                    <i class="fas fa-star"></i> Review Service
+                </button>
+                <!-- My Cart Button -->
+                <button class="dashboard-btn" data-bs-toggle="modal" data-bs-target="#myCartModal">
+                    <i class="fas fa-shopping-cart"></i> My Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-right" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: #000;">Name: John Doe</p> <!-- Adjust profile text color -->
+                    <p style="color: #000;">Email: example@gmail.com</p> <!-- Adjust profile text color -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Change Password</button>
+                    <button type="button" class="btn btn-danger">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+     <!-- Service Booking Modal -->
+
+     <div class="modal fade" id="serviceBookingModal" tabindex="-1" aria-labelledby="serviceBookingModalLabel" >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="serviceBookingModalLabel">Book Your Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/service}" method="post" th:object="${service}">
+                        <input type="hidden" th:field="*{id}" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Select Category</label>
+                                    <select class="form-select" id="category" name="category" onchange="populateServices()" th:field="*{category}">
+                                        <option value="">-- Select Category --</option>
+                                        <option value="Home Cleaning">Home Cleaning</option>
+                                        <option value="Plumbing">Plumbing</option>
+                                        <option value="Electrical Work">Electrical Work</option>
+                                        <option value="Carpentry">Carpentry</option>
+                                        <option value="Appliance Repair">Appliance Repair</option>
+                                        <option value="Home Renovation">Home Renovation</option>
+                                    </select>
+                                    <small th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="text-danger"></small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="serviceDate" class="form-label">Select Service Date</label>
+                                    <input type="date" class="form-control" id="serviceDate" name="serviceDate" th:field="*{serviceDate}">
+                                    <small th:if="${#fields.hasErrors('serviceDate')}" th:errors="*{serviceDate}" class="text-danger"></small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="preferredTime" class="form-label">Preferred Time</label>
+                                    <select class="form-select" id="preferredTime" name="preferredTime" th:field="*{preferredTime}">
+                                        <option value="">-- Select Time --</option>
+                                        <option value="09:00">9:00 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="14:00">2:00 PM</option>
+                                        <option value="15:00">3:00 PM</option>
+                                        <option value="16:00">4:00 PM</option>
+                                        <option value="17:00">5:00 PM</option>
+                                        <option value="18:00">6:00 PM</option>
+                                        <option value="19:00">7:00 PM</option>
+                                        <option value="20:00">8:00 PM</option>
+                                    </select>
+                                    <small th:if="${#fields.hasErrors('preferredTime')}" th:errors="*{preferredTime}" class="text-danger"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="fullName" class="form-label">Full Name:</label>
+                                    <input type="text" class="form-control" id="fullName" name="fullName" th:field="*{fullName}">
+                                    <small th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="text-danger"></small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email Address:</label>
+                                    <input type="email" class="form-control" id="email" name="email" th:field="*{email}">
+                                    <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone Number:</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" th:field="*{phone}">
+                                    <small th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="text-danger"></small>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address:</label>
+                                    <textarea class="form-control" id="address" name="address" rows="3" th:field="*{address}"></textarea>
+                                    <small th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></small>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="agreeTerms" name="agreeTerms" th:field="*{agreeTerms}">
+                                    <label class="form-check-label" for="agreeTerms">Agree to Terms and Conditions</label>
+                                    <small th:if="${#fields.hasErrors('agreeTerms')}" th:errors="*{agreeTerms}" class="text-danger"></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Book Service</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+     <!-- View Bookings Modal -->
+     <div class="modal fade" id="viewBookingsModal" tabindex="-1" aria-labelledby="viewBookingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewBookingsModalLabel">View Bookings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Category</th>
+                                    <th>Service Date</th>
+                                    <th>Preferred Time</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Example row, replace with dynamically generated content -->
+                                <tr>
+                                    <td>1</td>
+                                    <td>Plumbing</td>
+                                    <td>2024-03-20</td>
+                                    <td>09:00 AM</td>
+                                    <td>John Doe</td>
+                                    <td>johndoe@example.com</td>
+                                    <td>123-456-7890</td>
+                                    <td>123 Main St, City, Country</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Order History Modal -->
+<div class="modal fade" id="orderHistoryModal" tabindex="-1" aria-labelledby="orderHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderHistoryModalLabel">Order History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Order ID</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Example rows, replace with dynamically generated content -->
+                            <tr>
+                                <td>1</td>
+                                <td>#12345</td>
+                                <td>Widget</td>
+                                <td>2</td>
+                                <td>$20.00</td>
+                                <td>2024-03-17</td>
+                                <td>Shipped</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>#12346</td>
+                                <td>Gadget</td>
+                                <td>1</td>
+                                <td>$15.00</td>
+                                <td>2024-03-15</td>
+                                <td>Delivered</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ <!-- Update Profile Modal -->
+ <div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProfileModalLabel">Update Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Update profile form -->
+                <form>
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" rows="3" placeholder="Enter your address"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Change password form -->
+                <form>
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword" placeholder="Enter your current password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" placeholder="Enter your new password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your new password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Support Modal -->
+<div class="modal fade" id="contactSupportModal" tabindex="-1" aria-labelledby="contactSupportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactSupportModalLabel">Contact Support</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Contact support form -->
+                <form>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" placeholder="Enter the subject of your message">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Enter your message"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Review Service Modal -->
+<div class="modal fade" id="reviewServiceModal" tabindex="-1" aria-labelledby="reviewServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewServiceModalLabel">Review Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Review service form -->
+                <form>
+                    <div class="mb-3">
+                        <label for="serviceId" class="form-label">Service ID</label>
+                        <input type="text" class="form-control" id="serviceId" placeholder="Enter the service ID">
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceDate" class="form-label">Service Date</label>
+                        <input type="date" class="form-control" id="serviceDate" placeholder="Enter the service date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating</label>
+                        <input type="number" class="form-control" id="rating" min="1" max="5" placeholder="Enter your rating (1-5)">
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea class="form-control" id="comment" rows="5" placeholder="Enter your comment"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- My Cart Modal -->
+<div class="modal fade" id="myCartModal" tabindex="-1" aria-labelledby="myCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myCartModalLabel">My Cart</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Cart items display -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Service ID</th>
+                                <th scope="col">Service</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dynamically populate cart items here -->
+                            <tr>
+                                <td>101</td>
+                                <td>Home Cleaning</td>
+                                <td>$100</td>
+                                <td>1</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                                    <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>102</td>
+                                <td>Plumbing Service</td>
+                                <td>$75</td>
+                                <td>2</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                                    <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+   
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+
+<script>
+    function confirmLogout() {
+        // Display confirmation dialog
+        if (confirm("Are you sure you want to sign out?")) {
+            // Redirect to logout page or perform logout action
+            window.location.href = "logout.php"; // Change this to your logout URL
+        }
+    }
+</script>
+    <script>
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $(this).toggleClass('active');
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+            
+  
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.sidebar').length && !$(e.target).closest('#sidebarCollapse').length && $('#sidebar').hasClass('active')) {
+                    $('#sidebar').removeClass('active');
+                    $('#content').removeClass('active');
+                    $('#sidebarCollapse').removeClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

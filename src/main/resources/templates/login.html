@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>Login</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"> 
+
+
+    <!-- Icon Font Stylesheet -->
+    <link th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css}" rel="stylesheet">
+    <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css}" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/animate/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+    
+
+
+
+
+</head>
+<body>
+    
+    
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg  navbar-light sticky-top px-4 px-lg-5">
+        <a href="/home" class="navbar-brand d-flex align-items-center">
+            <h1 class="m-0"><img class="img-fluid me-3" src="img/icon/drop logo.png" alt="" >QuickHomeFix</h1>
+        </a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+            <div class="navbar-nav mr-auto pe-4 py-3 py-lg-0">
+                <a href="/home" class="nav-item nav-link">Home</a>
+                <a href="/register" class="nav-item nav-link">User Registration</a>
+                <a href="/serviceregistration" class="nav-item nav-link">Become a Partner</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Navbar End -->
+
+    <div class="background-container">
+        <img class="background-image" src="img/logi.png" alt="Background Image"> <!-- Replace 'background.jpg' with the path to your image -->
+    </div>
+    <section class="container1">
+	    <div class="form login">
+	        <div class="form-content">
+	            <header>Login</header>
+	           
+	            <form action="userLogin" method="post" onsubmit="return validateForm()">	
+	                <div class="field input-field">
+	                    <label for="email">Email</label>
+	                    <i class="fas fa-envelope icon"></i>
+	                    <input type="email" placeholder="Enter Email" name="username" id="username" class="input" required>
+	                    <small class="error-message" id="email-error"></small>
+	                </div>
+	                <div class="field input-field">
+	                    <label for="password">Password</label>
+	                    <i class="fas fa-lock icon"></i>
+	                    <input type="password" placeholder="Enter Password" name="password" id="password" class="input" required>
+	                    <small class="error-message" id="password-error"></small>
+	                    <span class="toggle-password"><i class="far fa-eye" onclick="togglePasswordVisibility('password')"></i></span>
+	                    
+	                </div>
+	                <div class="form-link1">
+	                    <a href="/forgetPass" class="forgot-pass">Forgot Password?</a>
+	                </div>
+	                <div class="field button-field">
+	                    <button type="submit">Login</button>
+	                </div>
+	                <div class="form-link2">
+	                    <span> Don't have an account?</span> <a href="/register" class="signuplink">Register</a>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+	</section>
+
+		<!-- JavaScript Libraries -->
+		    <script th:src="@{https://code.jquery.com/jquery-3.4.1.min.js}"></script>
+		    <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js}"></script>
+		    <script th:src="@{/lib/wow/wow.min.js}"></script>
+		    <script th:src="@{/lib/easing/easing.min.js}"></script>
+		    <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+		    <script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+		    <script th:src="@{/lib/counterup/counterup.min.js}"></script>
+		    <script th:src="@{/lib/parallax/parallax.min.js}"></script>
+		     <!-- Template Javascript -->
+		    <script th:src="@{/js/main.js}"></script>
+		    
+    <script> 
+    function validateForm() {
+		var email = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        
+        // Check if email has exactly 10 digits
+		var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	    if (!emailRegex.test(email)) {
+	        // If the email is invalid, display an error message
+	        document.getElementById('email-error').innerText = "Please enter a valid email address";
+	        return false;
+	    } else {
+	        // Clear any previous error messages if the email is valid
+	        document.getElementById('email-error').innerText = "";
+	    }
+	    
+	    // Check password complexity
+        var passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        if (!passwordRegex.test(password)) {
+            document.getElementById('password-error').innerText = "Weak Password";
+            return false;
+        } else {
+            // Clear any previous error messages
+            document.getElementById('password-error').innerText = "";
+        }
+        }
+		</script>
+		
+		
+		<script>
+	function togglePasswordVisibility(inputId) {
+        var input = document.getElementById(inputId);
+        var icon = input.parentElement.querySelector('.toggle-password i');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+    
+		    
+		// JavaScript function to check if there's information in the input field and show/hide eye icon accordingly
+		document.addEventListener('input', function(event) {
+		    var password = document.getElementById('password');
+		    var passwordIcon = password.parentElement.querySelector('.toggle-password');
+		    if (password.value.trim() !== '') {
+		        passwordIcon.style.display = 'inline-block';
+		    } else {
+		        passwordIcon.style.display = 'none';
+		    }
+		    
+		});
+
+		
+		</script>
+</body>
+</html>

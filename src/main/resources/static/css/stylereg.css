@@ -1,0 +1,350 @@
+:root {
+    --primary:#3133CD;
+    --secondary: #3133CD;
+    --light: #3133CD;
+    --dark: #3133CD;
+    --green: #3133CD;
+}
+
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 30px;
+    bottom: 30px;
+    z-index: 99;
+}
+
+
+/*** Spinner ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+}
+
+
+body {
+    min-height: 100vh;
+    padding: 0px;
+    align-items: center;
+    justify-content: center;
+    
+    margin: 0;
+}
+
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Ensure full viewport height */
+    z-index:-1;
+    
+}
+
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+}
+.navbar.sticky-top {
+    top: -100px;
+    transition: .5s;
+    z-index: 999;
+}
+
+.navbar .navbar-brand img {
+    max-height: 35px;
+}
+
+.navbar .navbar-nav .nav-link {
+    margin-left: 25px;
+    padding: 5px 0;
+    color: #000000;
+    font-weight: 400;
+    outline: none;
+}
+
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link.active {
+    color: var(--primary);
+}
+
+.navbar .dropdown-toggle::after {
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+h1{
+    color:#3133CD;
+}
+@media (max-width: 991.98px) {
+    .navbar .navbar-brand img {
+        max-height: 45px;
+    }
+
+    .navbar .navbar-nav {
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+
+    .navbar .nav-item .dropdown-menu {
+        padding-left: 30px;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar .nav-item .dropdown-menu {
+        display: block;
+        border: none;
+        margin-top: 0;
+        top: 150%;
+        right: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: .5s;
+    }
+
+    .navbar .nav-item:hover .dropdown-menu {
+        top: 100%;
+        visibility: visible;
+        transition: .5s;
+        opacity: 1;
+    }
+}
+
+.reg {
+    max-width: 50%; 
+    max-height: 80%;
+    width: 100%;
+    padding: 4px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    margin: auto; /* Center horizontally */
+    margin-top: 25px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    
+    background-color: rgba(255, 255, 255, 0.9); /* White background with 90% opacity */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Border with 10% opacity */
+}
+
+
+.reg header {
+    font-size: 1.5rem;
+    color:#000000;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    
+}
+
+.input-box {
+	position: relative;
+    width: 45%; /* Adjust this as needed */
+    margin: 6px;
+}
+
+.input-box label {
+    color:#000000;
+}
+
+.input-box input,
+.select-box select {
+	
+    width: 100%;
+    height: 45px;
+    outline: none;
+    font-size: 1rem;
+    color:#000000;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px 0 30px;
+    margin-top: 8px;
+}
+.input-box .icon {
+   position: absolute;
+    top: 70%; /* Vertically center the icon */
+    left: 8px; /* Adjust this value to position the icon */
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color:#707070;/* Adjust the color as needed */
+    z-index: 1;
+}
+
+
+.input-address .icon {
+   position: absolute;
+    top: 70%; /* Vertically center the icon */
+    left: 24px; /* Adjust this value to position the icon */
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color:#707070;/* Adjust the color as needed */
+    z-index: 1;
+}
+
+.select-box select {
+    width: 100%;
+    height: 45px;
+    outline: none;
+    font-size: 1rem;
+    color:#333;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px;
+    margin-top: 8px;
+}
+.input-address {
+	position: relative; 
+    width: 100%; /* Adjust this as needed */
+    margin:8px;
+    justify-content: left;
+    padding: 0 15px;
+
+}
+
+.input-address input {
+    position: relative; 
+    width: 100%;
+    height:45px;
+    outline: none;
+    font-size: 1rem;
+    color:#000000;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px 0 30px;
+    margin-top: 8px;
+}
+
+
+.input-box input[type="password"] {
+    padding-right: 40px; /* Adjust this value to create space for the icon */
+}
+
+.toggle-password {
+    display: none;
+}
+
+.input-box .toggle-password {
+    position: absolute;
+    top: 70%; /* Adjust this value to vertically center the icon */
+    right: 15px; /* Adjust this value to position the icon */
+    transform: translateY(-50%); /* Vertically center the icon */
+    cursor: pointer;
+}
+
+.input-box .toggle-password i {
+    font-size: 1rem;
+    color: #333; /* Adjust the color as needed */
+}
+.input-address label {
+    color:#000000;
+}
+
+.select{
+  border:none;
+  width: 100%;
+    height: 50px;
+    outline: none;
+    font-size: 1rem;
+    color: #707070;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px;
+    margin-top: 8px;
+}
+
+.select:focus{
+  outline:none;
+}
+.button-box {
+    width: 75%;
+    margin-top:-15px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 0 5px;
+}
+.button-box a, .button-box span{
+    margin-top: 8px;
+}
+
+.button-box button,
+.button-box a {
+    margin-right: 20px; /* Adjust margin as needed to create space between the button and anchor tag */
+    color: #3133CD;
+}
+
+.button-box a:hover{
+	text-decoration: underline;
+}
+
+.button-box button {
+    height: 40px;
+    width: 200px;
+    background-color:#3133CD;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    font-weight: 400;
+    margin-top: 30px;
+    cursor: pointer;
+    transition: all 0.2 ease;
+    border-radius: 6px;
+}
+
+.button-box button:hover {
+    background-color:midnightblue;
+}
+
+.input-box input:focus {
+    border-color: #3133CD; /* Change border color to black */
+    border-width: 2px; /* Increase border width */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add box shadow for visual effect */
+}
+
+
+.select-box select:focus {
+    border-color: #3133CD; /* Change border color to black */
+    border-width: 2px; /* Increase border width */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add box shadow for visual effect */
+}
+.input-address input:focus{
+    border-color: #3133CD; /* Change border color to black */
+    border-width: 2px; /* Increase border width */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add box shadow for visual effect */
+}
+
+/* Responsiveness */
+@media screen and (max-width: 768px) {
+    .input-box {
+        width: 90%;
+    }
+}
